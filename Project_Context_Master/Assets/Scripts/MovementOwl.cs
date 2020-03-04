@@ -47,7 +47,6 @@ public class MovementOwl : MonoBehaviour
             {
                 overuse = false;
                 ScriptMana.overuse = false;
-                Debug.Log(time);
             }
         }else if(overuse == false){
             time = 0;

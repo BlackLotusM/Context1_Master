@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using XInputDotNetPure;
 using UnityEngine;
 
 public class MovementRhino : MonoBehaviour
@@ -22,6 +23,12 @@ public class MovementRhino : MonoBehaviour
 
 
     Rigidbody2D rb2d;
+
+    bool playerIndexSet = false;
+    PlayerIndex playerIndex;
+    GamePadState state;
+    GamePadState prevState;
+
     void Start()
     {
         mana = 0.50f;
@@ -39,6 +46,9 @@ public class MovementRhino : MonoBehaviour
         MovePlayer();
         SpecialMove();
         OveruseCheck();
+
+        GamePad.SetVibration(playerIndex, 1f, 1f);
+
     }
 
     private void OveruseCheck()
@@ -52,7 +62,6 @@ public class MovementRhino : MonoBehaviour
 
                 overuse = false;
                 ScriptMana.overuse = false;
-                Debug.Log(time);
             }
             else
             {

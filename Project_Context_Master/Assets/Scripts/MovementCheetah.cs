@@ -50,7 +50,6 @@ public class MovementCheetah : MonoBehaviour
                 
                 overuse = false;
                 ScriptMana.overuse = false;
-                Debug.Log(time);
             }
             else
             {

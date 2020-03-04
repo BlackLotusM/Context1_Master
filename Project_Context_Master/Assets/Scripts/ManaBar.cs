@@ -38,6 +38,5 @@ public class ManaBar : MonoBehaviour
         }
 
         barImage.fillAmount = owo;
-        Debug.Log(owo);
     }
 }
