@@ -76,15 +76,15 @@ public class MovementCheetah : MonoBehaviour
         if (Input.GetButton("Fire2")){
             if (overuse == true)
             {
-                if (ScriptMana.owo < 1)
+                if (ScriptMana.ManaNumber < 1)
                 {
                     mana = mana + 0.005f;
-                    ScriptMana.owo = mana;  
+                    ScriptMana.ManaNumber = mana;  
                 }
             }
             else
             {
-                if (ScriptMana.owo <= 0)
+                if (ScriptMana.ManaNumber <= 0)
                 {
                     overuse = true;
                     ScriptMana.overuse = true;
@@ -92,16 +92,16 @@ public class MovementCheetah : MonoBehaviour
                 else
                 {
                     mana = mana - 0.0045f;
-                    ScriptMana.owo = mana;
+                    ScriptMana.ManaNumber = mana;
                 }
             }            
         }
         else
         {
-            if (ScriptMana.owo < 1)
+            if (ScriptMana.ManaNumber < 1)
             {
                 mana = mana + 0.005f;
-                ScriptMana.owo = mana;
+                ScriptMana.ManaNumber = mana;
             }
         }
     }

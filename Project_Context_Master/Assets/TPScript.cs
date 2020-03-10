@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class TPScript : MonoBehaviour
 {
-    public GameObject Connected;
-    Salamander test;
+    public Collider2D coll;
 
-    private void Start()
+    // Use this for initialization
+    void Start()
     {
-        test = new Salamander();
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if(collision.collider.name == "Salamander")
+        //Check if the isTrigger option on th Collider2D is set to true or false
+        if (coll.isTrigger)
         {
-            if(test.usingPwr == true)
-            {
-                Debug.Log("OWO");
-                collision.gameObject.transform.position = Connected.transform.position;
-            }
+            Debug.Log("This Collider2D can be triggered");
+        }
+        else if (!coll.isTrigger)
+        {
+            Debug.Log("This Collider2D cannot be triggered");
         }
     }
 }

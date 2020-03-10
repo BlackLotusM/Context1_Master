@@ -21,18 +21,18 @@ public class Salamander : MonoBehaviour
     Rigidbody2D rb2d;
     void Start()
     {
-        mana = 0.50f;
-        rb2d = GetComponent<Rigidbody2D>();
+        mana = 1f;
+        usingPwr = false;
         overuse = false;
-
         ScriptMana = GetComponent<ManaBar>();
         ScriptMana.overuse = false;
 
-        usingPwr = false;
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+        
         GetPlayerInput();
         RotatePlayer();
         MovePlayer();
@@ -46,7 +46,12 @@ public class Salamander : MonoBehaviour
         if (overuse == true)
         {
             time = time + 1;
-            if (time >= 800)
+
+            if(mana < 1)
+            {
+                mana = mana + 0.005f;
+            }
+            if (time >= 600)
             {
                 overuse = false;
                 ScriptMana.overuse = false;
@@ -58,42 +63,60 @@ public class Salamander : MonoBehaviour
         }
     }
 
+    public float delayTime = 0.35F;
+    private float next = 0.35F;
+    private float myTime = 0.0F;
+
 
     private void SpecialMove()
     {
-        if (Input.GetButton("Fire1"))
+        myTime = myTime + Time.deltaTime;
+
+        if (Input.GetButton("Fire1") && myTime > next)
         {
-            usingPwr = true;
+            next = myTime + delayTime;
+
             if (overuse == true)
             {
-                if (ScriptMana.owo < 1)
-                {
-                    mana = mana + 0.005f;
-                    ScriptMana.owo = mana;
-                }
+                usingPwr = false;
             }
             else
             {
-                if (ScriptMana.owo <= 0)
+                if (ScriptMana.ManaNumber <= 0)
                 {
+                    usingPwr = false;
                     overuse = true;
                     ScriptMana.overuse = true;
                 }
                 else
                 {
-                    mana = mana - 0.0045f;
-                    ScriptMana.owo = mana;
+                    transform.position += new Vector3(0,0.1f,0);
+                    usingPwr = true;
+                    mana = mana - 0.5f;
+                    ScriptMana.ManaNumber = mana;
                 }
             }
         }
         else
         {
-            if (ScriptMana.owo < 1)
+            usingPwr = false;
+            if (ScriptMana.ManaNumber < 1)
             {
                 mana = mana + 0.005f;
-                ScriptMana.owo = mana;
+                ScriptMana.ManaNumber = mana;
             }
         }
+
+        if (ScriptMana.ManaNumber <= 0)
+        {
+            usingPwr = false;
+            overuse = true;
+            ScriptMana.overuse = true;
+        }
+
+        next = next - myTime;
+        myTime = 0.0F;
+
     }
 
     private void GetPlayerInput()

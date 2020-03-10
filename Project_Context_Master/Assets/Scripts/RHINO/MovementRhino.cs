@@ -21,11 +21,7 @@ public class MovementRhino : MonoBehaviour
     public bool overuse;
     int time;
     ManaBar ScriptMana;
-
-
     Rigidbody2D rb2d;
-
-    bool playerIndexSet = false;
 
     void Start()
     {
@@ -77,23 +73,22 @@ public class MovementRhino : MonoBehaviour
         }
     }
 
-
     private void SpecialMove()
     {
         if (Input.GetButton("Fire2"))
         {
             if (overuse == true)
             {
-                if (ScriptMana.owo < 1)
+                if (ScriptMana.ManaNumber < 1)
                 {
                     mana = mana + 0.005f;
-                    ScriptMana.owo = mana;
+                    ScriptMana.ManaNumber = mana;
                 }
             }
 
             else
             {
-                if (ScriptMana.owo <= 0)
+                if (ScriptMana.ManaNumber <= 0)
                 {
                     overuse = true;
                     ScriptMana.overuse = true;
@@ -110,16 +105,16 @@ public class MovementRhino : MonoBehaviour
                     }
                     
                     mana = mana - 0.02f;
-                    ScriptMana.owo = mana;
+                    ScriptMana.ManaNumber = mana;
                 }
             }
         }
         else
         {
-            if (ScriptMana.owo < 1)
+            if (ScriptMana.ManaNumber < 1)
             {
                 mana = mana + 0.005f;
-                ScriptMana.owo = mana;
+                ScriptMana.ManaNumber = mana;
             }
         }
     }

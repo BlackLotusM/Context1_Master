@@ -7,36 +7,39 @@ public class ManaBar : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public Image barImage;
-    public float owo;
+    public Image barImage; //Component
+
+    public float ManaNumber;//Value
+
     public bool overuse;
-    public Image test;
+
+    public Image ManaChange;
 
     private void Start()
     {
-        //Image test = barImage.GetComponent<Image>();
+        ManaChange = barImage.GetComponent<Image>();
     }
     private void Update()
     {
-        test = barImage.GetComponent<Image>();
+        
         if (overuse == true)
         {
-            test.color = Color.red;
+            ManaChange.color = Color.red;
         }
         else if(overuse == false)
         {
-            test.color = Color.blue;
+            ManaChange.color = Color.blue;
         }
         
-        if(owo > 1)
+        if(ManaNumber > 1)
         {
-            owo = 1;
+            ManaNumber = 1;
         }
-        if (owo < 0)
+        if (ManaNumber < 0)
         {
-            owo = 0;
+            ManaNumber = 0;
         }
 
-        barImage.fillAmount = owo;
+        barImage.fillAmount = ManaNumber;
     }
 }
