@@ -9,26 +9,27 @@ public class MovementRhino : MonoBehaviour
 
     public float mana;
 
-    public bool side, updown;
+    public int idelCheck;
 
+    public Animator animator;
 
     public int baseSpeed = 0;
-    public int SpeedSpeed = 0;
-
     public int movementSpeed = 0;
-    public int rotationSpeed = 0;
 
+    public int usespeed;
+    public bool pwruse;
     public bool overuse;
-    int time;
+    public float time;
     ManaBar ScriptMana;
     Rigidbody2D rb2d;
+
+    public string loopkant;
 
     void Start()
     {
         mana = 0.50f;
         rb2d = GetComponent<Rigidbody2D>();
         overuse = false;
-
         ScriptMana = GetComponent<ManaBar>();
         ScriptMana.overuse = false;
     }
@@ -36,7 +37,6 @@ public class MovementRhino : MonoBehaviour
     void Update()
     {
         GetPlayerInput();
-        RotatePlayer();
         MovePlayer();
         SpecialMove();
         OveruseCheck();
@@ -47,24 +47,24 @@ public class MovementRhino : MonoBehaviour
 
         if (overuse == true)
         {
-            time = time + 1;
-            if (time >= 800)
+            pwruse = false;
+            time = time + Time.deltaTime;
+            if (time >= 8)
             {
-
                 overuse = false;
                 ScriptMana.overuse = false;
             }
             else
             {
-                movementSpeed = 2;
+                movementSpeed = 1;
             }
         }
         else if (overuse == false)
         {
             time = 0;
-            if (Input.GetButton("Fire2"))
+            if (pwruse == true)
             {
-                movementSpeed = 30;
+                movementSpeed = usespeed;
             }
             else
             {
@@ -75,13 +75,13 @@ public class MovementRhino : MonoBehaviour
 
     private void SpecialMove()
     {
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Fire1"))
         {
             if (overuse == true)
             {
                 if (ScriptMana.ManaNumber < 1)
                 {
-                    mana = mana + 0.005f;
+                    mana = mana + 0.0025f;
                     ScriptMana.ManaNumber = mana;
                 }
             }
@@ -95,63 +95,45 @@ public class MovementRhino : MonoBehaviour
                 }
                 else
                 {
-                    if(_verticalInput >= 0 && _verticalInput <= 0)
-                    {
-                        mana = 0;
-                    }
-                    else
-                    {
-                        rb2d.AddForce(Vector2.up * _verticalInput * SpeedSpeed);// = transform.up * _verticalInput * SpeedSpeed;
-                    }
-                    
-                    mana = mana - 0.02f;
+                    pwruse = true;
+                    mana = mana - 0.0015f;
                     ScriptMana.ManaNumber = mana;
                 }
             }
         }
         else
         {
+            pwruse = false;
             if (ScriptMana.ManaNumber < 1)
             {
-                mana = mana + 0.005f;
+                mana = mana + 0.0025f;
                 ScriptMana.ManaNumber = mana;
             }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if ((this.transform.position.x - collision.collider.transform.position.x) < 0)
-        {
-            print("hit left");
-        }
-
-        if (Input.GetButton("Fire2"))
-        {
-            if (overuse == true)
-            {
-
-            }
-            else
-            {
-                
-            }
-        }
-    }
     private void GetPlayerInput()
     {
-        _verticalInput = Input.GetAxisRaw("Vertical_3");
-        _horizontalInput2 = Input.GetAxisRaw("Horizontal_3");
-    }
-
-    private void RotatePlayer()
-    {
-        float rotation = -_horizontalInput2 * rotationSpeed;
-        transform.Rotate(Vector3.forward * rotation);
+        _verticalInput = Input.GetAxisRaw("Vertical");
+        _horizontalInput2 = Input.GetAxisRaw("Horizontal");
     }
 
     private void MovePlayer()
     {
-        rb2d.velocity = transform.up * _verticalInput * movementSpeed;
+        rb2d.velocity = new Vector2(Mathf.Lerp(0, _horizontalInput2 * movementSpeed, 0.8f),
+                                     Mathf.Lerp(0, _verticalInput * movementSpeed, 0.8f));
+
+        if(_horizontalInput2 != 0|| _verticalInput != 0)
+        {
+            idelCheck = 1;
+        }
+        else
+        {
+            idelCheck = 0;
+        }
+
+        animator.SetFloat("Horizontal", _horizontalInput2);
+        animator.SetFloat("Vertical", _verticalInput);
+        animator.SetFloat("Magnitude", idelCheck);
     }
 }
