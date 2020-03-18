@@ -6,13 +6,11 @@ using UnityEngine;
 public class SpikeTrap : MonoBehaviour
 {
     [SerializeField]
-    public float currentTime, minWaitTime, maxWaitTime;
+    private float currentTime, minWaitTime, maxWaitTime;
     [SerializeField]
-    public int spikesOut = 3;
+    private int spikesOut = 3;
 
     public SpriteRenderer spriteRenderer;
-    public Sprite t_0;
-    public Sprite t_1;
 
 
     void Start()
@@ -44,17 +42,20 @@ public class SpikeTrap : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            spriteRenderer.sprite = t_1;
+            spriteRenderer.color = Color.red;
         }
+        Debug.Log("Get shanked fool");
+
     }
 
     void SpikeIn()
     {
         if (spriteRenderer != null)
         {
-            spriteRenderer.sprite = t_0;
+            spriteRenderer.color = Color.green;
         }
-        spriteRenderer.sprite = t_0;
+        spriteRenderer.color = Color.green;
+        Debug.Log("Ait ill get u next time");
         currentTime = Random.Range(minWaitTime, maxWaitTime);
     }
 }
