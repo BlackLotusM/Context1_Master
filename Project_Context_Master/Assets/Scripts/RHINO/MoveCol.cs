@@ -10,7 +10,7 @@ public class MoveCol : MonoBehaviour
 
     private void Start()
     {
-         move = GetComponent<Rigidbody2D>();
+        move = GetComponent<Rigidbody2D>();
         move.isKinematic = true;
     }
 
@@ -22,15 +22,22 @@ public class MoveCol : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
         
-        Collider2D collider = collision.collider;
-
-        if (collider.name == "Rhino")
+        if (collision.collider.name == "Rhino")
         {
-            move.isKinematic = false;
+            if (collision.collider.GetComponent<MovementRhino>().pwruse == true)
+            {
+                move.isKinematic = false;
+            }
+            else
+            {
+                move.isKinematic = true;
+                move.velocity = Vector2.zero;
+            }
         }
         else
         {
             move.isKinematic = true;
+            move.velocity = Vector2.zero;
         }
     }
 

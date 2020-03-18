@@ -11,6 +11,9 @@ public class MovementOwl : MonoBehaviour
     public int movementSpeed = 0;
     public int rotationSpeed = 0;
 
+    int idelCheck;
+    public Animator animator;
+
     public bool overuse;
     int time;
     ManaBar ScriptMana;
@@ -31,7 +34,6 @@ public class MovementOwl : MonoBehaviour
     void Update()
     {
         GetPlayerInput();
-        RotatePlayer();
         MovePlayer();
         SpecialMove();
         OveruseCheck();
@@ -59,15 +61,15 @@ public class MovementOwl : MonoBehaviour
         if (Input.GetButton("Fire1")){
             if (overuse == true)
             {
-                if (ScriptMana.owo < 1)
+                if (ScriptMana.ManaNumber < 1)
                 {
                     mana = mana + 0.005f;
-                    ScriptMana.owo = mana;
+                    ScriptMana.ManaNumber = mana;
                 }
             }
             else
             {
-                if (ScriptMana.owo <= 0)
+                if (ScriptMana.ManaNumber <= 0)
                 {
                     HiddenObjects.SetActive(false);
                     overuse = true;
@@ -76,17 +78,17 @@ public class MovementOwl : MonoBehaviour
                 else
                 {
                     mana = mana - 0.0045f;
-                    ScriptMana.owo = mana;
+                    ScriptMana.ManaNumber = mana;
                     HiddenObjects.SetActive(true);
                 }
             }
         }
         else
         {
-            if (ScriptMana.owo < 1)
+            if (ScriptMana.ManaNumber < 1)
             {
                 mana = mana + 0.005f;
-                ScriptMana.owo = mana;
+                ScriptMana.ManaNumber = mana;
             }
 
             HiddenObjects.SetActive(false);
@@ -96,17 +98,24 @@ public class MovementOwl : MonoBehaviour
     private void GetPlayerInput()
     {
         _verticalInput = Input.GetAxisRaw("Vertical");
-        _horizontalInput2 = Input.GetAxisRaw("Horizontal_2");
-    }
-
-    private void RotatePlayer()
-    {
-        float rotation = -_horizontalInput2 * rotationSpeed;
-        transform.Rotate(Vector3.forward * rotation);
+        _horizontalInput2 = Input.GetAxisRaw("Horizontal");
     }
 
     private void MovePlayer()
     {
-        rb2d.velocity = transform.up * _verticalInput * movementSpeed;
+        rb2d.velocity = new Vector2(Mathf.Lerp(0, _horizontalInput2 * movementSpeed, 0.8f),
+                                     Mathf.Lerp(0, _verticalInput * movementSpeed, 0.8f));
+        if (_horizontalInput2 != 0 || _verticalInput != 0)
+        {
+            idelCheck = 1;
+        }
+        else
+        {
+            idelCheck = 0;
+        }
+
+        animator.SetFloat("Horizontal", _horizontalInput2);
+        animator.SetFloat("Vertical", _verticalInput);
+        animator.SetFloat("Magnitude", idelCheck);
     }
 }
